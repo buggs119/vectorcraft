@@ -4878,3 +4878,15 @@ theme	Appearance	Giao diện
 @msg	Added {added} font file(s)	Đã thêm {added} tệp phông chữ
 @msg	Added {added} font file(s); {_1} skipped	Đã thêm {added} tệp phông chữ; bỏ qua {_1}
 @msg	Couldn't add {_1}: {_2}	Không thể thêm {_1}: {_2}
+	Add Google Font	Thêm phông chữ Google
+	Added	Đã thêm
+	Browse Google Fonts…	Duyệt Google Fonts…
+	Downloading the catalog…	Đang tải danh mục…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Phông chữ giấy phép mở từ kho google/fonts, được thêm vào thư mục Fonts của VectorCraft.
+	{count} families	{count} họ phông
+@msg	Google Fonts downloads need the desktop app	Tải từ Google Fonts cần ứng dụng máy tính
+@msg	not a family folder	không phải thư mục họ phông
+@msg	not a family id	không phải id họ phông
+@msg	the catalog lists no fonts	danh mục không có phông chữ nào
+@msg	{file} isn't a font file	{file} không phải tệp phông chữ

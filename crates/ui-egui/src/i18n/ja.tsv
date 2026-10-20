@@ -4938,3 +4938,15 @@ lighting	Light	ライト
 @msg	Added {added} font file(s)	{added} 個のフォントファイルを追加しました
 @msg	Added {added} font file(s); {_1} skipped	{added} 個のフォントファイルを追加しました（{_1} 個をスキップ）
 @msg	Couldn't add {_1}: {_2}	{_1} を追加できません: {_2}
+	Add Google Font	Google フォントを追加
+	Added	追加済み
+	Browse Google Fonts…	Google Fonts を参照…
+	Downloading the catalog…	カタログをダウンロード中…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	google/fonts リポジトリのオープンライセンスのフォント。VectorCraft の Fonts フォルダーに追加されます。
+	{count} families	{count} ファミリー
+@msg	Google Fonts downloads need the desktop app	Google Fonts のダウンロードにはデスクトップアプリが必要です
+@msg	not a family folder	ファミリーのフォルダーではありません
+@msg	not a family id	ファミリーの ID ではありません
+@msg	the catalog lists no fonts	カタログにフォントがありません
+@msg	{file} isn't a font file	{file} はフォントファイルではありません

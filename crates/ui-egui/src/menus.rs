@@ -139,6 +139,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
     ("file.clearRecent", "Clear Recent Files", "", "{}"),
     ("type.findFont", "Find Font…", "", "{} open the Find Font dialog (engine: text.fonts / text.replaceFont / select.font)"),
     (
+        "ui.googleFontsDialog",
+        "Browse Google Fonts…",
+        "",
+        "{} open Google Fonts (dialog `googleFonts`): search the open-licence families of the google/fonts repository (text.googleFonts) and add them to VectorCraft's Fonts folder (text.installGoogleFont); the desktop app only",
+    ),
+    (
         "ui.installFonts",
         "Add Fonts…",
         "",
@@ -1701,6 +1707,10 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         "ui.printPresetDialog" => crate::dialogs::print::open_preset(app, p),
         "plugin.dialog" => crate::dialogs::plugin::open(app, p),
         "ui.installPlugin" => io::install_plugin(app, s("path")),
+        "ui.googleFontsDialog" => {
+            crate::google_fonts::open(app);
+            Ok(Value::Null)
+        }
         "ui.installFonts" => io::install_fonts(
             app,
             p.get("paths").and_then(Value::as_array).map(|a| a.iter().filter_map(Value::as_str).map(String::from).collect()).unwrap_or_default(),
@@ -2755,6 +2765,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 Sep,
                 c("Find Font…", "type.findFont"),
                 c("Add Fonts…", "ui.installFonts"),
+                c("Browse Google Fonts…", "ui.googleFontsDialog"),
                 sub(
                     "Change Case",
                     vec![

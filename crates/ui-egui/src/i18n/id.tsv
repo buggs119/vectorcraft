@@ -5262,3 +5262,15 @@ swatch	Bright Violet	Violet cerah
 @msg	Added {added} font file(s)	{added} file font ditambahkan
 @msg	Added {added} font file(s); {_1} skipped	{added} file font ditambahkan; {_1} dilewati
 @msg	Couldn't add {_1}: {_2}	Tidak dapat menambahkan {_1}: {_2}
+	Add Google Font	Tambahkan Font Google
+	Added	Ditambahkan
+	Browse Google Fonts…	Jelajahi Google Fonts…
+	Downloading the catalog…	Mengunduh katalog…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Font berlisensi terbuka dari repositori google/fonts, ditambahkan ke folder Fonts VectorCraft.
+	{count} families	{count} keluarga
+@msg	Google Fonts downloads need the desktop app	Unduhan Google Fonts memerlukan aplikasi desktop
+@msg	not a family folder	bukan folder keluarga
+@msg	not a family id	bukan id keluarga
+@msg	the catalog lists no fonts	katalog tidak berisi font
+@msg	{file} isn't a font file	{file} bukan file font

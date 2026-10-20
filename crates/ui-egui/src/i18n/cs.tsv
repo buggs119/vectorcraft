@@ -5284,3 +5284,15 @@ mark-style	Japanese	Japonské
 @msg	Added {added} font file(s)	Přidané soubory písem: {added}
 @msg	Added {added} font file(s); {_1} skipped	Přidané soubory písem: {added}; přeskočeno: {_1}
 @msg	Couldn't add {_1}: {_2}	Nelze přidat {_1}: {_2}
+	Add Google Font	Přidat písmo Google
+	Added	Přidáno
+	Browse Google Fonts…	Procházet Google Fonts…
+	Downloading the catalog…	Stahování katalogu…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Písma s otevřenou licencí z repozitáře google/fonts, přidaná do složky Fonts aplikace VectorCraft.
+	{count} families	Rodiny: {count}
+@msg	Google Fonts downloads need the desktop app	Stahování z Google Fonts vyžaduje desktopovou aplikaci
+@msg	not a family folder	není složka rodiny
+@msg	not a family id	není ID rodiny
+@msg	the catalog lists no fonts	katalog neobsahuje žádná písma
+@msg	{file} isn't a font file	{file} není soubor písma

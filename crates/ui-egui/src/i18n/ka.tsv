@@ -5191,3 +5191,15 @@ imageTrace	Outline	კონტური
 @msg	Added {added} font file(s)	დაემატა შრიფტის {added} ფაილი
 @msg	Added {added} font file(s); {_1} skipped	დაემატა შრიფტის {added} ფაილი; გამოტოვებულია {_1}
 @msg	Couldn't add {_1}: {_2}	{_1}-ის დამატება ვერ მოხერხდა: {_2}
+	Add Google Font	Google-ის შრიფტის დამატება
+	Added	დამატებულია
+	Browse Google Fonts…	Google Fonts-ის დათვალიერება…
+	Downloading the catalog…	კატალოგის ჩამოტვირთვა…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	ღია ლიცენზიის შრიფტები google/fonts საცავიდან, ემატება VectorCraft-ის Fonts საქაღალდეს.
+	{count} families	{count} ოჯახი
+@msg	Google Fonts downloads need the desktop app	Google Fonts-იდან ჩამოტვირთვას დესკტოპის აპი სჭირდება
+@msg	not a family folder	ოჯახის საქაღალდე არ არის
+@msg	not a family id	ოჯახის ID არ არის
+@msg	the catalog lists no fonts	კატალოგში შრიფტები არ არის
+@msg	{file} isn't a font file	{file} შრიფტის ფაილი არ არის

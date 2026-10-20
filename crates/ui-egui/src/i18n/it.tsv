@@ -4898,3 +4898,15 @@ lighting	Light	Luce
 @msg	Added {added} font file(s)	{added} file di font aggiunti
 @msg	Added {added} font file(s); {_1} skipped	{added} file di font aggiunti; {_1} ignorati
 @msg	Couldn't add {_1}: {_2}	Impossibile aggiungere {_1}: {_2}
+	Add Google Font	Aggiungi font Google
+	Added	Aggiunto
+	Browse Google Fonts…	Sfoglia Google Fonts…
+	Downloading the catalog…	Download del catalogo…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Font con licenza aperta dal repository google/fonts, aggiunti alla cartella Fonts di VectorCraft.
+	{count} families	{count} famiglie
+@msg	Google Fonts downloads need the desktop app	I download da Google Fonts richiedono l’app desktop
+@msg	not a family folder	non è una cartella di famiglia
+@msg	not a family id	non è un id di famiglia
+@msg	the catalog lists no fonts	il catalogo non contiene font
+@msg	{file} isn't a font file	{file} non è un file di font

@@ -28,6 +28,7 @@ mod clipboard;
 mod compositor_gpu;
 mod control_server;
 mod cursor_theme;
+mod google_fonts;
 #[cfg(feature = "wgpu")]
 mod gpu;
 mod logging;
@@ -738,6 +739,8 @@ fn main() -> std::process::ExitCode {
     mac_fonts::install();
     // VectorCraft's own Fonts folder, which text.addFontFiles copies fonts into.
     prefs_dir::install_fonts();
+    // Type › Browse Google Fonts… downloads.
+    google_fonts::install();
     // The log file lives in the settings directory, next to the preferences; opened after the
     // arguments, so `--version` leaves no file behind. Records logged until now are written to it
     // first. Runs without preferences (agents' test runs) log to standard error only, so they

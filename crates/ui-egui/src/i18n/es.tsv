@@ -5226,3 +5226,15 @@ mark-style	Japanese	Japonesas
 @msg	Added {added} font file(s)	Se añadieron {added} archivo(s) de fuente
 @msg	Added {added} font file(s); {_1} skipped	Se añadieron {added} archivo(s) de fuente; {_1} omitido(s)
 @msg	Couldn't add {_1}: {_2}	No se pudo añadir {_1}: {_2}
+	Add Google Font	Añadir fuente de Google
+	Added	Añadida
+	Browse Google Fonts…	Explorar Google Fonts…
+	Downloading the catalog…	Descargando el catálogo…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Fuentes de licencia abierta del repositorio google/fonts, añadidas a la carpeta Fonts de VectorCraft.
+	{count} families	{count} familias
+@msg	Google Fonts downloads need the desktop app	Las descargas de Google Fonts necesitan la aplicación de escritorio
+@msg	not a family folder	no es una carpeta de familia
+@msg	not a family id	no es un id de familia
+@msg	the catalog lists no fonts	el catálogo no contiene fuentes
+@msg	{file} isn't a font file	{file} no es un archivo de fuente

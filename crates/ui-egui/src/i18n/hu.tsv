@@ -5270,3 +5270,15 @@ imageTrace	Outline	Körvonal
 @msg	Added {added} font file(s)	{added} betűtípusfájl hozzáadva
 @msg	Added {added} font file(s); {_1} skipped	{added} betűtípusfájl hozzáadva; {_1} kihagyva
 @msg	Couldn't add {_1}: {_2}	Nem sikerült hozzáadni: {_1}: {_2}
+	Add Google Font	Google-betűtípus hozzáadása
+	Added	Hozzáadva
+	Browse Google Fonts…	Google Fonts böngészése…
+	Downloading the catalog…	A katalógus letöltése…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Nyílt licencű betűtípusok a google/fonts tárolóból, a VectorCraft Fonts mappájába kerülnek.
+	{count} families	{count} család
+@msg	Google Fonts downloads need the desktop app	A Google Fonts letöltésekhez az asztali alkalmazás kell
+@msg	not a family folder	nem családmappa
+@msg	not a family id	nem családazonosító
+@msg	the catalog lists no fonts	a katalógus nem tartalmaz betűtípust
+@msg	{file} isn't a font file	{file} nem betűtípusfájl

@@ -4894,3 +4894,15 @@ lighting	Light	Свет
 @msg	Added {added} font file(s)	Добавлено файлов шрифтов: {added}
 @msg	Added {added} font file(s); {_1} skipped	Добавлено файлов шрифтов: {added}; пропущено: {_1}
 @msg	Couldn't add {_1}: {_2}	Не удалось добавить {_1}: {_2}
+	Add Google Font	Добавить шрифт Google
+	Added	Добавлено
+	Browse Google Fonts…	Обзор Google Fonts…
+	Downloading the catalog…	Загрузка каталога…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Шрифты с открытой лицензией из репозитория google/fonts, добавляются в папку Fonts VectorCraft.
+	{count} families	Семейств: {count}
+@msg	Google Fonts downloads need the desktop app	Для загрузки из Google Fonts нужно настольное приложение
+@msg	not a family folder	не папка семейства
+@msg	not a family id	не идентификатор семейства
+@msg	the catalog lists no fonts	в каталоге нет шрифтов
+@msg	{file} isn't a font file	{file} не является файлом шрифта

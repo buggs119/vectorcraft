@@ -840,3 +840,24 @@ fn missing_font_story_layout_timing() {
         println!("{extra} fonts added, {} families loaded: median {:.1} ms; samples {ms:.1?}", db.family_list().len(), ms[3]);
     }
 }
+
+/// The PDF standard 14 fonts: a document naming Helvetica (or `Helvetica-Bold`) where Helvetica
+/// isn't installed is set in an installed font with its metrics, in the style the name gives.
+#[test]
+fn standard_14_names_use_a_font_with_their_metrics() {
+    let db = FontDb::with_font_dirs(vec![]);
+    if db.has_family("Helvetica") {
+        return; // macOS: the real Helvetica is installed.
+    }
+    // Without a substitute: the fallback font.
+    assert_eq!(db.face("Helvetica-Bold", "Regular").unwrap().family, crate::FALLBACK_FAMILY);
+    assert!(db.add_font(renamed_to("SourceSans3-Regular.ttf", "Nimbus Sans L")) > 0);
+    assert!(db.add_font(renamed_to("SourceSans3-Bold.ttf", "Nimbus Sans L")) > 0);
+    let face = |f: &str, s: &str| db.face(f, s).map(|f| (f.family.clone(), f.style.clone())).unwrap();
+    assert_eq!(face("Helvetica", "Regular"), ("Nimbus Sans L".into(), "Regular".into()));
+    assert_eq!(face("Helvetica-Bold", "Regular"), ("Nimbus Sans L".into(), "Bold".into()));
+    assert_eq!(face("helvetica", "Bold"), ("Nimbus Sans L".into(), "Bold".into()));
+    // Other names, and other standard 14 families without a substitute, are untouched.
+    assert_eq!(face("Helvetica-Narrow", "Regular").0, crate::FALLBACK_FAMILY);
+    assert_eq!(face("Times-Roman", "Regular").0, crate::FALLBACK_FAMILY);
+}

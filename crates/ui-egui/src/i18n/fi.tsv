@@ -5315,3 +5315,15 @@ swatch	Bright Violet	Kirkas violetti
 @msg	Added {added} font file(s)	Lisättiin {added} fonttitiedosto(a)
 @msg	Added {added} font file(s); {_1} skipped	Lisättiin {added} fonttitiedosto(a); {_1} ohitettiin
 @msg	Couldn't add {_1}: {_2}	Kohdetta {_1} ei voitu lisätä: {_2}
+	Add Google Font	Lisää Google-fontti
+	Added	Lisätty
+	Browse Google Fonts…	Selaa Google Fontsia…
+	Downloading the catalog…	Ladataan luetteloa…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Avoimesti lisensoituja fontteja google/fonts-arkistosta, lisätään VectorCraftin Fonts-kansioon.
+	{count} families	{count} perhettä
+@msg	Google Fonts downloads need the desktop app	Google Fonts -lataukset vaativat työpöytäsovelluksen
+@msg	not a family folder	ei ole perheen kansio
+@msg	not a family id	ei ole perheen tunnus
+@msg	the catalog lists no fonts	luettelossa ei ole fontteja
+@msg	{file} isn't a font file	{file} ei ole fonttitiedosto

@@ -28,6 +28,7 @@ pub mod flatten;
 pub mod fontfiles;
 mod fonts;
 pub(crate) mod freeform;
+pub mod googlefonts;
 pub(crate) mod gradient;
 pub(crate) mod graph;
 mod halftone;
@@ -241,6 +242,7 @@ pub fn command_specs() -> &'static [CommandSpec] {
         v.extend(textstyles::specs());
         v.extend(fonts::specs());
         v.extend(fontfiles::specs());
+        v.extend(googlefonts::specs());
         v.extend(help::specs());
         v.extend(threads::specs());
         v.extend(textwrap::specs());

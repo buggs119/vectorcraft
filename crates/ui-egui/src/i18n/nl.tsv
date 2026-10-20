@@ -5304,3 +5304,15 @@ swatch	Bright Violet	Felviolet
 @msg	Added {added} font file(s)	{added} lettertypebestand(en) toegevoegd
 @msg	Added {added} font file(s); {_1} skipped	{added} lettertypebestand(en) toegevoegd; {_1} overgeslagen
 @msg	Couldn't add {_1}: {_2}	Kan {_1} niet toevoegen: {_2}
+	Add Google Font	Google-lettertype toevoegen
+	Added	Toegevoegd
+	Browse Google Fonts…	Google Fonts bekijken…
+	Downloading the catalog…	Catalogus downloaden…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Lettertypen met open licentie uit de google/fonts-repository, toegevoegd aan de map Fonts van VectorCraft.
+	{count} families	{count} families
+@msg	Google Fonts downloads need the desktop app	Downloads van Google Fonts vereisen de desktop-app
+@msg	not a family folder	geen familiemap
+@msg	not a family id	geen familie-id
+@msg	the catalog lists no fonts	de catalogus bevat geen lettertypen
+@msg	{file} isn't a font file	{file} is geen lettertypebestand

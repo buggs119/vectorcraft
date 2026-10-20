@@ -5236,3 +5236,15 @@ effect	Points	Σημεία
 @msg	Added {added} font file(s)	Προστέθηκαν {added} αρχεία γραμματοσειρών
 @msg	Added {added} font file(s); {_1} skipped	Προστέθηκαν {added} αρχεία γραμματοσειρών· παραλείφθηκαν {_1}
 @msg	Couldn't add {_1}: {_2}	Δεν ήταν δυνατή η προσθήκη του {_1}: {_2}
+	Add Google Font	Προσθήκη γραμματοσειράς Google
+	Added	Προστέθηκε
+	Browse Google Fonts…	Περιήγηση στο Google Fonts…
+	Downloading the catalog…	Λήψη του καταλόγου…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Γραμματοσειρές ανοιχτής άδειας από το αποθετήριο google/fonts, που προστίθενται στον φάκελο Fonts του VectorCraft.
+	{count} families	{count} οικογένειες
+@msg	Google Fonts downloads need the desktop app	Οι λήψεις από το Google Fonts χρειάζονται την εφαρμογή υπολογιστή
+@msg	not a family folder	δεν είναι φάκελος οικογένειας
+@msg	not a family id	δεν είναι αναγνωριστικό οικογένειας
+@msg	the catalog lists no fonts	ο κατάλογος δεν περιέχει γραμματοσειρές
+@msg	{file} isn't a font file	το {file} δεν είναι αρχείο γραμματοσειράς

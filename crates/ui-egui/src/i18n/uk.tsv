@@ -4878,3 +4878,15 @@ lighting	Light	Світло
 @msg	Added {added} font file(s)	Додано файлів шрифтів: {added}
 @msg	Added {added} font file(s); {_1} skipped	Додано файлів шрифтів: {added}; пропущено: {_1}
 @msg	Couldn't add {_1}: {_2}	Не вдалося додати {_1}: {_2}
+	Add Google Font	Додати шрифт Google
+	Added	Додано
+	Browse Google Fonts…	Огляд Google Fonts…
+	Downloading the catalog…	Завантаження каталогу…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Шрифти з відкритою ліцензією з репозиторію google/fonts, додаються до папки Fonts VectorCraft.
+	{count} families	Родин: {count}
+@msg	Google Fonts downloads need the desktop app	Для завантаження з Google Fonts потрібен настільний застосунок
+@msg	not a family folder	не папка родини
+@msg	not a family id	не ідентифікатор родини
+@msg	the catalog lists no fonts	у каталозі немає шрифтів
+@msg	{file} isn't a font file	{file} не є файлом шрифту

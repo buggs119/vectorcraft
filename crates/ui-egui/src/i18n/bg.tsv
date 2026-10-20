@@ -5244,3 +5244,15 @@ theme	Appearance	Външен вид
 @msg	Added {added} font file(s)	Добавени файлове с шрифтове: {added}
 @msg	Added {added} font file(s); {_1} skipped	Добавени файлове с шрифтове: {added}; пропуснати: {_1}
 @msg	Couldn't add {_1}: {_2}	Не може да се добави {_1}: {_2}
+	Add Google Font	Добавяне на шрифт от Google
+	Added	Добавен
+	Browse Google Fonts…	Разглеждане на Google Fonts…
+	Downloading the catalog…	Изтегляне на каталога…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Шрифтове с отворен лиценз от хранилището google/fonts, добавяни в папката Fonts на VectorCraft.
+	{count} families	{count} семейства
+@msg	Google Fonts downloads need the desktop app	Изтеглянето от Google Fonts изисква настолното приложение
+@msg	not a family folder	не е папка на семейство
+@msg	not a family id	не е идентификатор на семейство
+@msg	the catalog lists no fonts	каталогът не съдържа шрифтове
+@msg	{file} isn't a font file	{file} не е файл с шрифт

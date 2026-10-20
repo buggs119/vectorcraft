@@ -4865,3 +4865,15 @@ effect	Soft	Weich
 @msg	Added {added} font file(s)	{added} Schriftdatei(en) hinzugefügt
 @msg	Added {added} font file(s); {_1} skipped	{added} Schriftdatei(en) hinzugefügt; {_1} übersprungen
 @msg	Couldn't add {_1}: {_2}	{_1} konnte nicht hinzugefügt werden: {_2}
+	Add Google Font	Google-Schrift hinzufügen
+	Added	Hinzugefügt
+	Browse Google Fonts…	Google Fonts durchsuchen…
+	Downloading the catalog…	Katalog wird geladen…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Schriften mit offener Lizenz aus dem Repository google/fonts, im Fonts-Ordner von VectorCraft abgelegt.
+	{count} families	{count} Schriftfamilien
+@msg	Google Fonts downloads need the desktop app	Downloads von Google Fonts brauchen die Desktop-App
+@msg	not a family folder	kein Ordner einer Schriftfamilie
+@msg	not a family id	keine ID einer Schriftfamilie
+@msg	the catalog lists no fonts	der Katalog enthält keine Schriften
+@msg	{file} isn't a font file	{file} ist keine Schriftdatei

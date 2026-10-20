@@ -5121,3 +5121,15 @@ lighting	Light	光源
 @msg	Added {added} font file(s)	已添加 {added} 个字体文件
 @msg	Added {added} font file(s); {_1} skipped	已添加 {added} 个字体文件；已跳过 {_1} 个
 @msg	Couldn't add {_1}: {_2}	无法添加 {_1}：{_2}
+	Add Google Font	添加 Google 字体
+	Added	已添加
+	Browse Google Fonts…	浏览 Google Fonts…
+	Downloading the catalog…	正在下载目录…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	来自 google/fonts 仓库的开放许可字体，添加到 VectorCraft 的 Fonts 文件夹。
+	{count} families	{count} 个字体家族
+@msg	Google Fonts downloads need the desktop app	从 Google Fonts 下载需要桌面版应用
+@msg	not a family folder	不是字体家族文件夹
+@msg	not a family id	不是字体家族 ID
+@msg	the catalog lists no fonts	目录中没有字体
+@msg	{file} isn't a font file	{file} 不是字体文件

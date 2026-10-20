@@ -5283,3 +5283,15 @@ theme	Appearance	Apparence
 @msg	Added {added} font file(s)	{added} fichier(s) de police ajouté(s)
 @msg	Added {added} font file(s); {_1} skipped	{added} fichier(s) de police ajouté(s) ; {_1} ignoré(s)
 @msg	Couldn't add {_1}: {_2}	Impossible d’ajouter {_1} : {_2}
+	Add Google Font	Ajouter une police Google
+	Added	Ajoutée
+	Browse Google Fonts…	Parcourir Google Fonts…
+	Downloading the catalog…	Téléchargement du catalogue…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Polices sous licence libre du dépôt google/fonts, ajoutées au dossier Fonts de VectorCraft.
+	{count} families	{count} familles
+@msg	Google Fonts downloads need the desktop app	Les téléchargements Google Fonts nécessitent l’application de bureau
+@msg	not a family folder	pas un dossier de famille
+@msg	not a family id	pas un identifiant de famille
+@msg	the catalog lists no fonts	le catalogue ne contient aucune police
+@msg	{file} isn't a font file	{file} n’est pas un fichier de police

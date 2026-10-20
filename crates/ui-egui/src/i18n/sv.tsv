@@ -5240,3 +5240,15 @@ theme	Appearance	Utseende
 @msg	Added {added} font file(s)	Lade till {added} typsnittsfil(er)
 @msg	Added {added} font file(s); {_1} skipped	Lade till {added} typsnittsfil(er); {_1} hoppades över
 @msg	Couldn't add {_1}: {_2}	Det gick inte att lägga till {_1}: {_2}
+	Add Google Font	Lägg till Google-typsnitt
+	Added	Tillagt
+	Browse Google Fonts…	Bläddra i Google Fonts…
+	Downloading the catalog…	Hämtar katalogen…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	Typsnitt med öppen licens från arkivet google/fonts, läggs i VectorCrafts Fonts-mapp.
+	{count} families	{count} familjer
+@msg	Google Fonts downloads need the desktop app	Hämtningar från Google Fonts kräver skrivbordsappen
+@msg	not a family folder	inte en familjemapp
+@msg	not a family id	inte ett familje-id
+@msg	the catalog lists no fonts	katalogen innehåller inga typsnitt
+@msg	{file} isn't a font file	{file} är inte en typsnittsfil

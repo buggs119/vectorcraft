@@ -513,6 +513,37 @@ fn script_families(c: char) -> &'static [&'static str] {
     }
 }
 
+/// The PDF standard 14 fonts (ISO 32000-1 § 9.6.2.2) by family or PostScript name (`Helvetica`,
+/// `Times-BoldItalic`, `ZapfDingbats`; any case) → the families tried for them, in order (the
+/// font itself where installed, then free fonts with the same metrics: Croscore's Arimo, Tinos and
+/// Cousine, Liberation, TeX Gyre, URW's), and the style a PostScript name gives.
+fn standard14(name: &str) -> Option<(&'static [&'static str], Option<&'static str>)> {
+    const SANS: &[&str] = &["Helvetica", "Arimo", "Liberation Sans", "TeX Gyre Heros", "Nimbus Sans", "Nimbus Sans L", "Arial"];
+    const SERIF: &[&str] = &["Times", "Times New Roman", "Tinos", "Liberation Serif", "TeX Gyre Termes", "Nimbus Roman", "Nimbus Roman No9 L"];
+    const MONO: &[&str] = &["Courier", "Courier New", "Cousine", "Liberation Mono", "TeX Gyre Cursor", "Nimbus Mono PS", "Nimbus Mono L"];
+    const SYMBOL: &[&str] = &["Symbol", "Standard Symbols PS", "Standard Symbols L"];
+    const DINGBATS: &[&str] = &["Zapf Dingbats", "ITC Zapf Dingbats", "D050000L", "Dingbats"];
+    let lower = name.trim().to_ascii_lowercase();
+    let (base, suffix) = lower.split_once('-').unwrap_or((&lower, ""));
+    let families = match base.replace(' ', "").as_str() {
+        "helvetica" => SANS,
+        "times" => SERIF,
+        "courier" => MONO,
+        "symbol" => SYMBOL,
+        "zapfdingbats" | "itczapfdingbats" => DINGBATS,
+        _ => return None,
+    };
+    let style = match suffix {
+        "" => None,
+        "roman" => Some("Regular"),
+        "bold" => Some("Bold"),
+        "italic" | "oblique" => Some("Italic"),
+        "bolditalic" | "boldoblique" => Some("Bold Italic"),
+        _ => return None,
+    };
+    Some((families, style))
+}
+
 /// Families tried (when installed) for characters the loaded fonts lack: CJK, symbols, emoji.
 #[cfg(not(target_arch = "wasm32"))]
 const SYSTEM_FALLBACKS: &[&str] = &[
@@ -2120,6 +2151,17 @@ impl FontDb {
             self.load_cataloged(family);
             if let Some(f) = self.find(family, style) {
                 return Some(f);
+            }
+        }
+        // A PDF standard 14 font that isn't installed: a font with its metrics, when one is.
+        if found.is_none()
+            && let Some((families, ps_style)) = standard14(family)
+        {
+            let style = ps_style.unwrap_or(style);
+            for f in families.iter().filter(|f| !f.eq_ignore_ascii_case(family) && self.has_family(f)) {
+                if let Some(face) = self.face(f, style).filter(|face| face.family.eq_ignore_ascii_case(f)) {
+                    return Some(face);
+                }
             }
         }
         found

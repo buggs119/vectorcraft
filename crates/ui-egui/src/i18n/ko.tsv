@@ -4861,3 +4861,15 @@ lighting	Light	광원
 @msg	Added {added} font file(s)	글꼴 파일 {added}개를 추가했습니다
 @msg	Added {added} font file(s); {_1} skipped	글꼴 파일 {added}개를 추가했습니다. {_1}개 건너뜀
 @msg	Couldn't add {_1}: {_2}	{_1}을(를) 추가할 수 없습니다: {_2}
+	Add Google Font	Google 글꼴 추가
+	Added	추가됨
+	Browse Google Fonts…	Google Fonts 둘러보기…
+	Downloading the catalog…	카탈로그 다운로드 중…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	google/fonts 저장소의 오픈 라이선스 글꼴로, VectorCraft의 Fonts 폴더에 추가됩니다.
+	{count} families	{count}개 패밀리
+@msg	Google Fonts downloads need the desktop app	Google Fonts 다운로드는 데스크톱 앱에서만 가능합니다
+@msg	not a family folder	패밀리 폴더가 아닙니다
+@msg	not a family id	패밀리 ID가 아닙니다
+@msg	the catalog lists no fonts	카탈로그에 글꼴이 없습니다
+@msg	{file} isn't a font file	{file}은(는) 글꼴 파일이 아닙니다

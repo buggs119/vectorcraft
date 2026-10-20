@@ -4916,3 +4916,15 @@ lighting	Light	光源
 @msg	Added {added} font file(s)	已加入 {added} 個字體檔案
 @msg	Added {added} font file(s); {_1} skipped	已加入 {added} 個字體檔案；已略過 {_1} 個
 @msg	Couldn't add {_1}: {_2}	無法加入 {_1}：{_2}
+	Add Google Font	加入 Google 字體
+	Added	已加入
+	Browse Google Fonts…	瀏覽 Google Fonts…
+	Downloading the catalog…	正在下載目錄…
+	Google Fonts	Google Fonts
+	Open-licence fonts from the google/fonts repository, added to VectorCraft's Fonts folder.	來自 google/fonts 儲存庫的開放授權字體，加入 VectorCraft 的 Fonts 資料夾。
+	{count} families	{count} 個字體家族
+@msg	Google Fonts downloads need the desktop app	從 Google Fonts 下載需要桌面版 App
+@msg	not a family folder	不是字體家族資料夾
+@msg	not a family id	不是字體家族 ID
+@msg	the catalog lists no fonts	目錄中沒有字體
+@msg	{file} isn't a font file	{file} 不是字體檔案
