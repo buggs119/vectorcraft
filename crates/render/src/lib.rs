@@ -7,6 +7,7 @@
 #![forbid(unsafe_code)]
 
 mod brush_fx;
+mod colorglyph;
 pub mod encode;
 mod freeform;
 mod fx;
@@ -1859,6 +1860,11 @@ impl Renderer {
                 self.draw_stroke(ctx, f, t.xf, path, FillRule::NonZero, &run.style.stroke_layer(), g.bounds);
             }
         }
+        for cg in &g.colors {
+            let Some(run) = t.runs.get(cg.run) else { continue };
+            overprint(ctx, run.style.overprint_fill);
+            colorglyph::draw(ctx, f, xf * cg.xf, cg, &run.style.fill);
+        }
         overprint(ctx, false);
         self.draw_inlines(ctx, f, t, g);
         if let Some(all) = &all {
@@ -2268,6 +2274,9 @@ struct TextGeom {
     alternate_glyphs: std::sync::OnceLock<BezPath>,
     /// Inline graphics placed by the layout.
     inlines: Vec<vectorcraft_text::InlineGlyph>,
+    /// Colour glyphs (COLR), drawn by their layers instead of their run's fill: in `all`, not in
+    /// any run's span.
+    colors: Vec<colorglyph::ColorGlyph>,
 }
 
 impl TextGeom {
@@ -2396,8 +2405,14 @@ fn text_geom_snapped(t: &TextObject, snap: Option<Affine>) -> TextGeom {
         .collect();
     let (mut substituted_fonts, mut substituted_glyphs, mut alternate_candidates) = (BezPath::new(), BezPath::new(), vec![]);
     let plain = t.plain_text();
+    let mut colors = vec![];
     for g in &layout.glyphs {
-        push(&mut all, g.run, &g.outline);
+        // A colour glyph's outline isn't filled with its run's paint: its layers are drawn.
+        let layers = db.color_layers(g.font_id, g.gid);
+        push(&mut all, if layers.is_some() { usize::MAX } else { g.run }, &g.outline);
+        if let Some(layers) = layers {
+            colors.push(colorglyph::ColorGlyph { run: g.run, xf: g.xf, layers });
+        }
         let Some(&(missing, face)) = faces.get(g.run) else { continue };
         let Some(line) = layout.lines.get(g.line) else { continue };
         let mut cell = Rect::new(g.origin.x, g.origin.y - line.ascent, g.origin.x + g.advance, g.origin.y + line.descent).to_path(0.1);
@@ -2432,6 +2447,7 @@ fn text_geom_snapped(t: &TextObject, snap: Option<Affine>) -> TextGeom {
         alternate_candidates,
         alternate_glyphs: std::sync::OnceLock::new(),
         inlines: layout.inlines,
+        colors,
     }
 }
 

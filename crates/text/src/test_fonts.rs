@@ -361,3 +361,37 @@ pub fn twin_font(newer: bool) -> Option<Vec<u8>> {
     }
     Some(builder.build())
 }
+
+/// The family of [`color_font`].
+pub const COLOR_FAMILY: &str = "Colortest Sans";
+
+/// The red of [`color_font`]'s palette (RGBA).
+pub const COLOR_RED: [u8; 4] = [220, 30, 40, 255];
+
+/// The bundled Source Sans 3 Regular as a colour font (COLR v0, CPAL) of family [`COLOR_FAMILY`]:
+/// `O` is drawn as its own outline in [`COLOR_RED`] under an `o` in the text's colour (palette
+/// index 0xFFFF); every other glyph is plain.
+pub fn color_font() -> Option<Vec<u8>> {
+    use write_fonts::tables::colr::{BaseGlyph, Colr, Layer};
+    use write_fonts::tables::cpal::{ColorRecord, Cpal};
+    use write_fonts::types::GlyphId16;
+    const BASE: &[u8] = include_bytes!("../../../assets/fonts/SourceSans3-Regular.ttf");
+    let font = skrifa::FontRef::new(BASE).ok()?;
+    let charmap = font.charmap();
+    let gid = |c| Some(GlyphId16::new(u16::try_from(charmap.map(c)?.to_u32()).ok()?));
+    let (big, small) = (gid('O')?, gid('o')?);
+    let colr = Colr::new(1, Some(vec![BaseGlyph::new(big, 0, 2)]), Some(vec![Layer::new(big, 0), Layer::new(small, 0xFFFF)]), 2);
+    let [r, g, b, a] = COLOR_RED;
+    let cpal = Cpal::new(1, 1, 1, Some(vec![ColorRecord::new(b, g, r, a)]), vec![0]);
+    let name = name_table(&[(1, COLOR_FAMILY), (2, "Regular"), (4, "Colortest Sans Regular"), (6, "ColortestSans-Regular")])?;
+    let mut builder = FontBuilder::new();
+    builder.add_raw(Tag::new(b"name"), name);
+    builder.add_table(&colr).ok()?.add_table(&cpal).ok()?;
+    for r in font.table_directory.table_records() {
+        let tag = Tag::new(&r.tag().to_be_bytes());
+        if !builder.contains(tag) {
+            builder.add_raw(tag, font.table_data(r.tag())?.as_bytes());
+        }
+    }
+    Some(builder.build())
+}

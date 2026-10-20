@@ -301,3 +301,35 @@ fn enveloped_type_under_effects_redraws_when_its_font_becomes_available() {
         assert_eq!(after, Renderer::new().render(&d, 300, 150, Affine::IDENTITY, &opts).pixels, "{what}: as a new renderer draws it");
     }
 }
+
+/// A colour font's colour glyph draws its layers: the palette's red, and the text's own (blue)
+/// fill for the layer in the text's colour; a plain glyph of the same font takes the fill alone.
+#[test]
+fn colour_glyphs_draw_their_layers() {
+    use vectorcraft_text::test_fonts::{COLOR_FAMILY, color_font};
+    let _adding = adding_fonts();
+    let db = vectorcraft_text::FontDb::global();
+    if !db.has_family(COLOR_FAMILY) {
+        assert!(db.add_font(color_font().unwrap()) > 0);
+    }
+    let draw = |text: &str| {
+        let mut d = Document::new(200.0, 160.0);
+        let blue = vectorcraft_color::Paint::solid(vectorcraft_color::Color::rgb(0.0, 0.0, 1.0));
+        let style = CharStyle { size: 120.0, font_family: COLOR_FAMILY.into(), fill: blue, ..Default::default() };
+        let mut n = Node::new(NodeId(0), NodeKind::Text(Box::new(TextObject::point(Point::new(20.0, 130.0), text, style))));
+        n.id = d.alloc_id();
+        let l = d.layers[0].id;
+        d.insert(Some(l), 0, n).unwrap();
+        let opts = RenderOptions { background: Some([255, 255, 255, 255]), ..Default::default() };
+        Renderer::new().render(&d, 200, 160, Affine::IDENTITY, &opts).pixels
+    };
+    let count = |px: &[u8], want: fn(&[u8]) -> bool| px.as_chunks::<4>().0.iter().filter(|p| want(&p[..])).count();
+    let red = |p: &[u8]| p[0] > 180 && p[1] < 80 && p[2] < 80;
+    let blue = |p: &[u8]| p[0] < 60 && p[1] < 60 && p[2] > 180;
+    let colour = draw("O");
+    assert!(count(&colour, red) > 200, "the red layer is drawn");
+    assert!(count(&colour, blue) > 50, "the layer in the text's colour takes its fill");
+    let plain = draw("x");
+    assert_eq!(count(&plain, red), 0);
+    assert!(count(&plain, blue) > 50);
+}

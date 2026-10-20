@@ -10,6 +10,7 @@
 //! Frames (`TextKind::Area`) and paths (`TextKind::OnPath`) are interpreted in text space.
 #![forbid(unsafe_code)]
 
+pub mod color;
 mod composer;
 pub mod craft_fonts;
 pub mod edit;
