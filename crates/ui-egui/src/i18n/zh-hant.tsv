@@ -4905,3 +4905,14 @@ lighting	Light	光源
 	Plaster	塑膠效果
 	Note Paper…	便條紙…
 	Note Paper	便條紙
+	Add Fonts…	加入字體…
+	Chinese	中文
+	Korean	韓文
+	Cyrillic	西里爾文
+	Greek	希臘文
+	Hebrew	希伯來文
+	Devanagari	天城文
+	Variable fonts only	僅可變字體
+@msg	Added {added} font file(s)	已加入 {added} 個字體檔案
+@msg	Added {added} font file(s); {_1} skipped	已加入 {added} 個字體檔案；已略過 {_1} 個
+@msg	Couldn't add {_1}: {_2}	無法加入 {_1}：{_2}

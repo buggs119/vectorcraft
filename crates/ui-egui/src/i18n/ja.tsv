@@ -4927,3 +4927,14 @@ lighting	Light	ライト
 	Plaster	石膏
 	Note Paper…	ノート用紙…
 	Note Paper	ノート用紙
+	Add Fonts…	フォントを追加…
+	Chinese	中国語
+	Korean	韓国語
+	Cyrillic	キリル文字
+	Greek	ギリシャ文字
+	Hebrew	ヘブライ文字
+	Devanagari	デーヴァナーガリー
+	Variable fonts only	バリアブルフォントのみ
+@msg	Added {added} font file(s)	{added} 個のフォントファイルを追加しました
+@msg	Added {added} font file(s); {_1} skipped	{added} 個のフォントファイルを追加しました（{_1} 個をスキップ）
+@msg	Couldn't add {_1}: {_2}	{_1} を追加できません: {_2}

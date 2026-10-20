@@ -4850,3 +4850,14 @@ lighting	Light	광원
 	Plaster	석고
 	Note Paper…	메모지…
 	Note Paper	메모지
+	Add Fonts…	글꼴 추가…
+	Chinese	중국어
+	Korean	한국어
+	Cyrillic	키릴 문자
+	Greek	그리스 문자
+	Hebrew	히브리 문자
+	Devanagari	데바나가리
+	Variable fonts only	가변 글꼴만
+@msg	Added {added} font file(s)	글꼴 파일 {added}개를 추가했습니다
+@msg	Added {added} font file(s); {_1} skipped	글꼴 파일 {added}개를 추가했습니다. {_1}개 건너뜀
+@msg	Couldn't add {_1}: {_2}	{_1}을(를) 추가할 수 없습니다: {_2}

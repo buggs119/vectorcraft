@@ -151,3 +151,14 @@ fn an_instance_embeds_as_a_static_font_at_its_settings() {
     assert!((f64::from(adv) - face.advance(face.glyph_for('l'))).abs() <= 1.0, "{adv}");
     assert!((f64::from(adv) - regular.advance(regular.glyph_for('l'))).abs() > 5.0, "not the default instance's: {adv}");
 }
+
+/// The font menu's filters: a variable font is marked variable; Source Sans 3 (static) covers
+/// Cyrillic and Greek and no CJK.
+#[test]
+fn font_traits_mark_variable_fonts_and_scripts() {
+    let db = db();
+    assert!(db.family_traits(FAMILY).variable);
+    let sans = db.family_traits("Source Sans 3");
+    assert!(!sans.variable && sans.cyrillic && sans.greek, "{sans:?}");
+    assert!(!sans.chinese && !sans.korean && !sans.japanese && !sans.arabic, "{sans:?}");
+}

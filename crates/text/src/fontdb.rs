@@ -668,13 +668,26 @@ impl FontClass {
         [FontClass::Serif, FontClass::Sans, FontClass::Rounded, FontClass::Script, FontClass::Monospaced, FontClass::Decorative];
 }
 
-/// What a font menu filters on: whether a family sets Japanese or Thai, and its kind.
+/// What a font menu filters on: the scripts a family sets, its kind, and whether it is variable.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct FontTraits {
     pub japanese: bool,
     /// Its character map has Thai (ก and า).
     pub thai: bool,
     pub class: FontClass,
+    /// The scripts below come from the OS/2 table's Unicode ranges and code pages (what the font
+    /// says it covers), which the catalog reads without loading the font.
+    pub cyrillic: bool,
+    pub greek: bool,
+    pub hebrew: bool,
+    pub arabic: bool,
+    pub devanagari: bool,
+    /// Hangul syllables, or the Korean code pages.
+    pub korean: bool,
+    /// The Simplified or Traditional Chinese code pages.
+    pub chinese: bool,
+    /// It has variation axes (an `fvar` table).
+    pub variable: bool,
 }
 
 impl FontTraits {
@@ -685,10 +698,13 @@ impl FontTraits {
         let names: Vec<&str> = keys.families.iter().chain(&keys.postscript).map(String::as_str).collect();
         let named = |words: &[&str]| names.iter().any(|n| words.iter().any(|w| n.contains(w)));
         let has_japanese_name = keys.families.iter().any(|k| k.chars().any(|c| matches!(c as u32, 0x3040..=0x30FF | 0x4E00..=0x9FFF)));
-        let (class_id, panose, ranges2, codepages) = match &os2 {
-            Some(o) => (o.s_family_class(), o.panose_10().to_vec(), o.ul_unicode_range_2(), o.ul_code_page_range_1().unwrap_or(0)),
-            None => (0, vec![], 0, 0),
+        let (class_id, panose, ranges1, ranges2, codepages) = match &os2 {
+            Some(o) => {
+                (o.s_family_class(), o.panose_10().to_vec(), o.ul_unicode_range_1(), o.ul_unicode_range_2(), o.ul_code_page_range_1().unwrap_or(0))
+            }
+            None => (0, vec![], 0, 0, 0),
         };
+        let range1 = |bit: u32| ranges1 & (1 << bit) != 0;
         // Hiragana (bit 49) or Katakana (bit 50) in the Unicode ranges, or the JIS code page.
         let japanese = ranges2 & (0b11 << 17) != 0 || codepages & (1 << 17) != 0 || has_japanese_name;
         let thai = ['\u{0E01}', '\u{0E32}'].iter().all(|c| font.charmap().map(*c).is_some());
@@ -789,7 +805,21 @@ impl FontTraits {
         } else {
             FontClass::Other
         };
-        FontTraits { japanese, thai, class }
+        FontTraits {
+            japanese,
+            thai,
+            class,
+            // OS/2 Unicode range bits 7, 9, 11, 13 and 15; Hangul syllables are bit 56, and the
+            // code page bits 18 and 20 are Simplified and Traditional Chinese, 19 and 21 Korean.
+            greek: range1(7),
+            cyrillic: range1(9),
+            hebrew: range1(11),
+            arabic: range1(13),
+            devanagari: range1(15),
+            korean: ranges2 & (1 << 24) != 0 || codepages & (0b101 << 19) != 0,
+            chinese: codepages & (0b101 << 18) != 0,
+            variable: font.fvar().is_ok_and(|f| f.axis_count() > 0),
+        }
     }
 }
 

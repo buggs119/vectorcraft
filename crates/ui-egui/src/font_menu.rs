@@ -84,8 +84,9 @@ const SAMPLES_PER_FRAME: usize = 4;
 const MAX_PENDING: usize = 8;
 /// What a sample shows when the font lacks the selected text's characters (or there is none).
 const FALLBACK_SAMPLE: &str = "Sample";
-/// The script filter's choices: all, Japanese, Latin, Thai.
-const SCRIPTS: usize = 4;
+/// The script filter's choices: all, Japanese, Latin, Thai, then (added later, so a kept choice
+/// keeps its number) Chinese, Korean, Cyrillic, Greek, Arabic, Hebrew and Devanagari.
+const SCRIPTS: usize = 11;
 
 fn script_label(i: usize) -> &'static str {
     match i {
@@ -93,17 +94,31 @@ fn script_label(i: usize) -> &'static str {
         1 => crate::i18n::tr_ctx(crate::i18n::current(), "font-script", "Japanese"),
         2 => tl!("Latin"),
         3 => tl!("Thai"),
+        4 => tl!("Chinese"),
+        5 => tl!("Korean"),
+        6 => tl!("Cyrillic"),
+        7 => tl!("Greek"),
+        8 => tl!("Arabic"),
+        9 => tl!("Hebrew"),
+        10 => tl!("Devanagari"),
         _ => tl!("All Scripts"),
     }
 }
 
-/// Does a family of `traits` pass script filter `script` ([`SCRIPTS`])? Latin: neither Japanese
-/// nor Thai.
+/// Does a family of `traits` pass script filter `script` ([`SCRIPTS`])? Latin: neither Chinese,
+/// Japanese, Korean nor Thai.
 fn script_matches(script: usize, traits: vectorcraft_text::FontTraits) -> bool {
     match script {
         1 => traits.japanese,
-        2 => !traits.japanese && !traits.thai,
+        2 => !traits.japanese && !traits.thai && !traits.chinese && !traits.korean,
         3 => traits.thai,
+        4 => traits.chinese,
+        5 => traits.korean,
+        6 => traits.cyrillic,
+        7 => traits.greek,
+        8 => traits.arabic,
+        9 => traits.hebrew,
+        10 => traits.devanagari,
         _ => true,
     }
 }
@@ -151,9 +166,10 @@ fn remap_highlight(before: &[Row], selected: Option<usize>, after: &[Row]) -> Op
     after.iter().position(|candidate| candidate == row)
 }
 
-/// What the rows were listed for: the query, the script, kind and favourites filters, Show Font
-/// Names in English, the expanded families, the favourites and the font list's generation.
-type RowsKey = (String, usize, Option<FontClass>, bool, bool, Vec<String>, Vec<String>, u64);
+/// What the rows were listed for: the query, the script, kind, favourites and variable filters,
+/// Show Font Names in English, the expanded families, the favourites and the font list's
+/// generation.
+type RowsKey = (String, usize, Option<FontClass>, bool, bool, bool, Vec<String>, Vec<String>, u64);
 
 /// The menu's state between frames.
 #[derive(Clone, Default)]
@@ -168,11 +184,12 @@ struct MenuState {
     /// The highlighted row and the query and filters it belongs to.
     highlight: Option<usize>,
     query: String,
-    /// The filters (kept from one opening to the next): script (0..[`SCRIPTS`]), kind, and
-    /// favourites only.
+    /// The filters (kept from one opening to the next): script (0..[`SCRIPTS`]), kind,
+    /// favourites only and variable fonts only.
     script: usize,
     class: Option<FontClass>,
     favorites_only: bool,
+    variable_only: bool,
     /// Families whose styles are listed (lowercase).
     expanded: Vec<String>,
     /// What was previewed last (None: nothing is previewed).
@@ -262,6 +279,11 @@ fn list(ui: &mut Ui, state_id: egui::Id, st: &mut MenuState, current: &str, samp
             st.favorites_only = !st.favorites_only;
             refilter = true;
         }
+        if ui.selectable_label(st.variable_only, egui::RichText::new(tl!("Variable")).size(11.0)).on_hover_text(tl!("Variable fonts only")).clicked()
+        {
+            st.variable_only = !st.variable_only;
+            refilter = true;
+        }
         if ui.selectable_label(st.class.is_none(), egui::RichText::new(tl!("Any Kind")).size(11.0)).clicked() {
             st.class = None;
             refilter = true;
@@ -281,8 +303,17 @@ fn list(ui: &mut Ui, state_id: egui::Id, st: &mut MenuState, current: &str, samp
     let current = current.as_str();
     let favorite = |f: &str| look.favorites.iter().any(|x| x.eq_ignore_ascii_case(f));
     // The generation is read first: fonts that load meanwhile make the next frame list them.
-    let key: RowsKey =
-        (query.clone(), st.script, st.class, st.favorites_only, look.english_names, st.expanded.clone(), look.favorites.to_vec(), db.generation());
+    let key: RowsKey = (
+        query.clone(),
+        st.script,
+        st.class,
+        st.favorites_only,
+        st.variable_only,
+        look.english_names,
+        st.expanded.clone(),
+        look.favorites.to_vec(),
+        db.generation(),
+    );
     if st.rows_key.as_ref() != Some(&key) {
         let wanted = |f: &str| {
             let label = db.family_display_name(f, look.english_names);
@@ -292,11 +323,11 @@ fn list(ui: &mut Ui, state_id: egui::Id, st: &mut MenuState, current: &str, samp
             if st.favorites_only && !favorite(f) {
                 return false;
             }
-            if st.script == 0 && st.class.is_none() {
+            if st.script == 0 && st.class.is_none() && !st.variable_only {
                 return true;
             }
             let traits = db.family_traits(f);
-            script_matches(st.script, traits) && st.class.is_none_or(|c| c == traits.class)
+            script_matches(st.script, traits) && st.class.is_none_or(|c| c == traits.class) && (!st.variable_only || traits.variable)
         };
         let mut rows: Vec<Row> = vec![];
         for f in db.menu_family_list().iter().filter(|f| wanted(f)) {
@@ -776,6 +807,12 @@ mod tests {
         assert_eq!(passing(thai), [0, 3]);
         assert_eq!(passing(japanese), [0, 1]);
         assert_eq!(passing(latin), [0, 2]);
+        let arabic = FontTraits { arabic: true, ..Default::default() };
+        assert_eq!(passing(arabic), [0, 2, 8], "an Arabic font with Latin letters is listed under both");
+        let chinese = FontTraits { chinese: true, ..Default::default() };
+        assert_eq!(passing(chinese), [0, 4]);
+        let korean = FontTraits { korean: true, ..Default::default() };
+        assert_eq!(passing(korean), [0, 5]);
         assert_eq!(super::script_label(3), "Thai");
         let zh = crate::i18n::Lang::from_code("zh-hans").unwrap();
         crate::i18n::set_current(zh);

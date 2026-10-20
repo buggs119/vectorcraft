@@ -4883,3 +4883,14 @@ lighting	Light	Свет
 	Plaster	Гипс
 	Note Paper…	Почтовая бумага…
 	Note Paper	Почтовая бумага
+	Add Fonts…	Добавить шрифты…
+	Chinese	Китайский
+	Korean	Корейский
+	Cyrillic	Кириллица
+	Greek	Греческий
+	Hebrew	Иврит
+	Devanagari	Деванагари
+	Variable fonts only	Только вариативные шрифты
+@msg	Added {added} font file(s)	Добавлено файлов шрифтов: {added}
+@msg	Added {added} font file(s); {_1} skipped	Добавлено файлов шрифтов: {added}; пропущено: {_1}
+@msg	Couldn't add {_1}: {_2}	Не удалось добавить {_1}: {_2}

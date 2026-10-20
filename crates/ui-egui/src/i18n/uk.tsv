@@ -4867,3 +4867,14 @@ lighting	Light	Світло
 	Plaster	Гіпс
 	Note Paper…	Поштовий папір…
 	Note Paper	Поштовий папір
+	Add Fonts…	Додати шрифти…
+	Chinese	Китайська
+	Korean	Корейська
+	Cyrillic	Кирилиця
+	Greek	Грецька
+	Hebrew	Іврит
+	Devanagari	Деванагарі
+	Variable fonts only	Лише варіативні шрифти
+@msg	Added {added} font file(s)	Додано файлів шрифтів: {added}
+@msg	Added {added} font file(s); {_1} skipped	Додано файлів шрифтів: {added}; пропущено: {_1}
+@msg	Couldn't add {_1}: {_2}	Не вдалося додати {_1}: {_2}

@@ -5251,3 +5251,14 @@ swatch	Bright Violet	Kraftig violet
 	Plaster	Gips
 	Note Paper…	Notatpapir…
 	Note Paper	Notatpapir
+	Add Fonts…	Tilføj skrifttyper…
+	Chinese	Kinesisk
+	Korean	Koreansk
+	Cyrillic	Kyrillisk
+	Greek	Græsk
+	Hebrew	Hebraisk
+	Devanagari	Devanagari
+	Variable fonts only	Kun variable skrifttyper
+@msg	Added {added} font file(s)	Tilføjede {added} skrifttypefil(er)
+@msg	Added {added} font file(s); {_1} skipped	Tilføjede {added} skrifttypefil(er); {_1} sprunget over
+@msg	Couldn't add {_1}: {_2}	Kunne ikke tilføje {_1}: {_2}

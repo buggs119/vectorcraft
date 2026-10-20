@@ -5125,3 +5125,14 @@ mark-style	Japanese	Japońskie
 	Plaster	Gips
 	Note Paper…	Papier listowy…
 	Note Paper	Papier listowy
+	Add Fonts…	Dodaj fonty…
+	Chinese	Chiński
+	Korean	Koreański
+	Cyrillic	Cyrylica
+	Greek	Grecki
+	Hebrew	Hebrajski
+	Devanagari	Dewanagari
+	Variable fonts only	Tylko fonty zmienne
+@msg	Added {added} font file(s)	Dodano pliki fontów: {added}
+@msg	Added {added} font file(s); {_1} skipped	Dodano pliki fontów: {added}; pominięto: {_1}
+@msg	Couldn't add {_1}: {_2}	Nie można dodać {_1}: {_2}

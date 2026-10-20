@@ -789,6 +789,7 @@ pub fn open_filters() -> impl Iterator<Item = (&'static str, &'static [&'static 
         .chain(std::iter::once(("Shortcut sets", super::shortcutset::EXTS)))
         .chain(std::iter::once(("Scripts", super::scripts::EXTS)))
         .chain(std::iter::once(("Plug-ins", super::plugin::EXTS)))
+        .chain(std::iter::once(("Fonts", super::fontfiles::FONT_EXTS)))
 }
 
 /// File → Place dialog filters: "All placeable files", then one per placeable format, then text,

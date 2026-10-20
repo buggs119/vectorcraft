@@ -73,5 +73,24 @@ fn a_found_font_is_copied_without_replacing_a_file_and_its_type_redraws() {
     // Only files the last search found are copied.
     let r = s.execute("text.addFontFiles", &json!({"files": [root.join("other.ttf")]}));
     assert!(r.as_ref().is_err_and(|e| e.to_string().contains("the last text.findFontFiles search")), "{r:?}");
+
+    // Type › Add Fonts… copies any font file the user picks, and skips what isn't a font.
+    let picked = root.join("Picked Sans.otf");
+    std::fs::write(&picked, vectorcraft_testkit::fonts::renamed("Pickedd Sans9")).unwrap();
+    std::fs::write(root.join("notes.txt"), b"not a font").unwrap();
+    let r = s.execute("text.installFonts", &json!({"files": [picked, root.join("notes.txt")]})).unwrap();
+    assert_eq!(r["copied"], json!([{"from": picked, "to": fonts.join("Picked Sans.otf")}]), "{r}");
+    assert_eq!(r["skipped"][0]["file"], json!(root.join("notes.txt")), "{r}");
+    let families = s.execute("text.fontList", &json!({})).unwrap();
+    assert!(families["families"].as_array().unwrap().iter().any(|f| f == "Pickedd Sans9"), "{families}");
+    // A font's bytes (the web) are added for the session.
+    let data = vectorcraft_format::base64_encode(&vectorcraft_testkit::fonts::renamed("Bytesss Sans9"));
+    let r = s.execute("text.installFonts", &json!({"name": "b.otf", "dataBase64": data})).unwrap();
+    assert!(r["faces"].as_u64().is_some_and(|n| n > 0), "{r}");
+    let r = s.execute("text.installFonts", &json!({"name": "b.otf", "dataBase64": data})).unwrap();
+    assert_eq!(r["skipped"][0]["file"], "b.otf", "the same font twice adds nothing: {r}");
+    for junk in [json!({}), json!({"files": []}), json!({"files": [1]}), json!({"dataBase64": "!!"})] {
+        assert!(s.execute("text.installFonts", &junk).is_err(), "{junk}");
+    }
     let _ = std::fs::remove_dir_all(&root);
 }

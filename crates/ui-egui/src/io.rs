@@ -31,6 +31,13 @@ pub fn open_bytes(app: &mut VectorcraftApp, name: &str, bytes: &[u8], path: Opti
         app.status(format!("Installed plug-in {}", r["name"].as_str().unwrap_or(name)));
         return Ok(Value::Null);
     }
+    if opens == Some(OpensAs::Font) {
+        let p = match path {
+            Some(path) => json!({ "files": [path] }),
+            None => json!({"name": name, "dataBase64": vectorcraft_format::base64_encode(bytes)}),
+        };
+        return install_fonts_reporting(app, &p).map(|_| Value::Null);
+    }
     if opens == Some(OpensAs::ShortcutSet) {
         return dialogs::shortcut_import::open(app, name, bytes).map(|_| Value::Null);
     }
@@ -90,6 +97,8 @@ pub enum OpensAs {
     SwatchLibrary,
     /// A graphic style library: opened in the library panel.
     StyleLibrary,
+    /// A font file: added to VectorCraft's Fonts folder (for this session on the web).
+    Font,
 }
 
 /// The kind of file named `name` (by its extension) that File → Open installs, imports, checks,
@@ -118,6 +127,8 @@ pub fn opens_as(name: &str) -> Option<OpensAs> {
         Some(OpensAs::SwatchLibrary)
     } else if ext == vectorcraft_doc::style_libs::STYLES_EXT {
         Some(OpensAs::StyleLibrary)
+    } else if vectorcraft_engine::cmd::fontfiles::FONT_EXTS.contains(&ext.as_str()) {
+        Some(OpensAs::Font)
     } else {
         None
     }
@@ -156,6 +167,42 @@ pub fn install_plugin(app: &mut VectorcraftApp, path: Option<String>) -> Result<
     };
     let r = app.run("plugin.install", json!({ "path": path }))?;
     app.status(format!("Installed plug-in {}", r["name"].as_str().unwrap_or_default()));
+    Ok(r)
+}
+
+/// Type › Add Fonts…: copies the font files at `paths` into VectorCraft's Fonts folder, else
+/// picked ones (the web's file picker hands each file to [`open_bytes`], which adds it).
+pub fn install_fonts(app: &mut VectorcraftApp, paths: Vec<String>) -> Result<Value, String> {
+    let paths = match paths {
+        p if !p.is_empty() => p,
+        _ if app.services.open_async.is_some() => return open_dialog(app).map(|_| Value::Null),
+        _ if app.services.pick_open_multi.is_some() => crate::picks::open_many(app),
+        _ => crate::picks::open(app, &FilePick { filters: vec![("Fonts", vectorcraft_engine::cmd::fontfiles::FONT_EXTS)], ..Default::default() })
+            .into_iter()
+            .collect(),
+    };
+    if paths.is_empty() {
+        return Err("cancelled".into());
+    }
+    install_fonts_reporting(app, &json!({ "files": paths }))
+}
+
+/// Run `text.installFonts` with `p` and say in the status bar what it added or why it didn't.
+fn install_fonts_reporting(app: &mut VectorcraftApp, p: &Value) -> Result<Value, String> {
+    let r = app.run("text.installFonts", p.clone())?;
+    let len = |k: &str| r[k].as_array().map_or(0, Vec::len);
+    let added = len("copied") + len("kept") + usize::from(r["faces"].as_u64().is_some_and(|n| n > 0) && r.get("folder").is_none());
+    match r["skipped"].as_array().and_then(|s| s.first()) {
+        Some(first) if added == 0 => {
+            return Err(format!(
+                "Couldn't add {}: {}",
+                fileio::file_name(first["file"].as_str().unwrap_or_default()),
+                first["reason"].as_str().unwrap_or_default()
+            ));
+        }
+        Some(_) => app.status(format!("Added {added} font file(s); {} skipped", len("skipped"))),
+        None => app.status(format!("Added {added} font file(s)")),
+    }
     Ok(r)
 }
 

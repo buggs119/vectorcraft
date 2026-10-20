@@ -5304,3 +5304,14 @@ swatch	Bright Violet	Kirkas violetti
 	Plaster	Kipsi
 	Note Paper…	Kirjepaperi…
 	Note Paper	Kirjepaperi
+	Add Fonts…	Lisää fontteja…
+	Chinese	Kiina
+	Korean	Korea
+	Cyrillic	Kyrillinen
+	Greek	Kreikka
+	Hebrew	Heprea
+	Devanagari	Devanagari
+	Variable fonts only	Vain muuttuvat fontit
+@msg	Added {added} font file(s)	Lisättiin {added} fonttitiedosto(a)
+@msg	Added {added} font file(s); {_1} skipped	Lisättiin {added} fonttitiedosto(a); {_1} ohitettiin
+@msg	Couldn't add {_1}: {_2}	Kohdetta {_1} ei voitu lisätä: {_2}

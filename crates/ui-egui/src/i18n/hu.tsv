@@ -5259,3 +5259,14 @@ imageTrace	Outline	Körvonal
 	Plaster	Gipsz
 	Note Paper…	Jegyzetpapír…
 	Note Paper	Jegyzetpapír
+	Add Fonts…	Betűtípusok hozzáadása…
+	Chinese	Kínai
+	Korean	Koreai
+	Cyrillic	Cirill
+	Greek	Görög
+	Hebrew	Héber
+	Devanagari	Dévanágari
+	Variable fonts only	Csak változó betűtípusok
+@msg	Added {added} font file(s)	{added} betűtípusfájl hozzáadva
+@msg	Added {added} font file(s); {_1} skipped	{added} betűtípusfájl hozzáadva; {_1} kihagyva
+@msg	Couldn't add {_1}: {_2}	Nem sikerült hozzáadni: {_1}: {_2}

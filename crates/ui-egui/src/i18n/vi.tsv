@@ -4867,3 +4867,14 @@ theme	Appearance	Giao diện
 	Plaster	Thạch cao
 	Note Paper…	Giấy ghi chú…
 	Note Paper	Giấy ghi chú
+	Add Fonts…	Thêm phông chữ…
+	Chinese	Tiếng Trung
+	Korean	Tiếng Hàn
+	Cyrillic	Kirin
+	Greek	Hy Lạp
+	Hebrew	Do Thái
+	Devanagari	Devanagari
+	Variable fonts only	Chỉ phông chữ biến thiên
+@msg	Added {added} font file(s)	Đã thêm {added} tệp phông chữ
+@msg	Added {added} font file(s); {_1} skipped	Đã thêm {added} tệp phông chữ; bỏ qua {_1}
+@msg	Couldn't add {_1}: {_2}	Không thể thêm {_1}: {_2}

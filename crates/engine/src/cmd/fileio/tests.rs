@@ -377,11 +377,12 @@ fn open_exts_cover_every_readable_format() {
     assert_eq!(filters[0], ("All readable files", OPEN_EXTS));
     assert_eq!(
         filters.len(),
-        9 + FORMATS.iter().filter(|f| f.read).count(),
-        "and swatch libraries, libraries, flattener, PDF and print presets, shortcut sets, scripts, plug-ins"
+        10 + FORMATS.iter().filter(|f| f.read).count(),
+        "and swatch libraries, libraries, flattener, PDF and print presets, shortcut sets, scripts, plug-ins, fonts"
     );
     assert!(filters.contains(&("Scripts", crate::cmd::scripts::EXTS)), "File › Open checks scripts");
-    assert_eq!(filters.last(), Some(&("Plug-ins", crate::cmd::plugin::EXTS)), "File › Open installs plug-ins");
+    assert!(filters.contains(&("Plug-ins", crate::cmd::plugin::EXTS)), "File › Open installs plug-ins");
+    assert_eq!(filters.last(), Some(&("Fonts", crate::cmd::fontfiles::FONT_EXTS)), "File › Open adds fonts");
 }
 
 /// The extensions usage texts list for export: one per writable format, each picking that format

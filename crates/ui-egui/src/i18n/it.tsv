@@ -4887,3 +4887,14 @@ lighting	Light	Luce
 	Plaster	Gesso
 	Note Paper…	Carta da lettere…
 	Note Paper	Carta da lettere
+	Add Fonts…	Aggiungi font…
+	Chinese	Cinese
+	Korean	Coreano
+	Cyrillic	Cirillico
+	Greek	Greco
+	Hebrew	Ebraico
+	Devanagari	Devanagari
+	Variable fonts only	Solo font variabili
+@msg	Added {added} font file(s)	{added} file di font aggiunti
+@msg	Added {added} font file(s); {_1} skipped	{added} file di font aggiunti; {_1} ignorati
+@msg	Couldn't add {_1}: {_2}	Impossibile aggiungere {_1}: {_2}

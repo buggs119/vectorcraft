@@ -5190,3 +5190,14 @@ mark-style	Japanese	Japonesas
 	Plaster	Gesso
 	Note Paper…	Papel de carta…
 	Note Paper	Papel de carta
+	Add Fonts…	Adicionar fontes…
+	Chinese	Chinês
+	Korean	Coreano
+	Cyrillic	Cirílico
+	Greek	Grego
+	Hebrew	Hebraico
+	Devanagari	Devanágari
+	Variable fonts only	Somente fontes variáveis
+@msg	Added {added} font file(s)	{added} arquivo(s) de fonte adicionado(s)
+@msg	Added {added} font file(s); {_1} skipped	{added} arquivo(s) de fonte adicionado(s); {_1} ignorado(s)
+@msg	Couldn't add {_1}: {_2}	Não foi possível adicionar {_1}: {_2}

@@ -5180,3 +5180,14 @@ imageTrace	Outline	კონტური
 	Plaster	თაბაშირი
 	Note Paper…	ჩანაწერების ქაღალდი…
 	Note Paper	ჩანაწერების ქაღალდი
+	Add Fonts…	შრიფტების დამატება…
+	Chinese	ჩინური
+	Korean	კორეული
+	Cyrillic	კირილიცა
+	Greek	ბერძნული
+	Hebrew	ებრაული
+	Devanagari	დევანაგარი
+	Variable fonts only	მხოლოდ ცვლადი შრიფტები
+@msg	Added {added} font file(s)	დაემატა შრიფტის {added} ფაილი
+@msg	Added {added} font file(s); {_1} skipped	დაემატა შრიფტის {added} ფაილი; გამოტოვებულია {_1}
+@msg	Couldn't add {_1}: {_2}	{_1}-ის დამატება ვერ მოხერხდა: {_2}

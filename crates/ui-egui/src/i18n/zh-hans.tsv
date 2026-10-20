@@ -5110,3 +5110,14 @@ lighting	Light	光源
 	Plaster	塑料效果
 	Note Paper…	便条纸…
 	Note Paper	便条纸
+	Add Fonts…	添加字体…
+	Chinese	中文
+	Korean	韩文
+	Cyrillic	西里尔文
+	Greek	希腊文
+	Hebrew	希伯来文
+	Devanagari	天城文
+	Variable fonts only	仅可变字体
+@msg	Added {added} font file(s)	已添加 {added} 个字体文件
+@msg	Added {added} font file(s); {_1} skipped	已添加 {added} 个字体文件；已跳过 {_1} 个
+@msg	Couldn't add {_1}: {_2}	无法添加 {_1}：{_2}

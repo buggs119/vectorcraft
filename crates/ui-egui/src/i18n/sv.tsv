@@ -5229,3 +5229,14 @@ theme	Appearance	Utseende
 	Plaster	Gips
 	Note Paper…	Anteckningspapper…
 	Note Paper	Anteckningspapper
+	Add Fonts…	Lägg till typsnitt…
+	Chinese	Kinesiska
+	Korean	Koreanska
+	Cyrillic	Kyrilliska
+	Greek	Grekiska
+	Hebrew	Hebreiska
+	Devanagari	Devanagari
+	Variable fonts only	Endast variabla typsnitt
+@msg	Added {added} font file(s)	Lade till {added} typsnittsfil(er)
+@msg	Added {added} font file(s); {_1} skipped	Lade till {added} typsnittsfil(er); {_1} hoppades över
+@msg	Couldn't add {_1}: {_2}	Det gick inte att lägga till {_1}: {_2}

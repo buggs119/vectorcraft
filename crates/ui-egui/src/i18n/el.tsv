@@ -5225,3 +5225,14 @@ effect	Points	Σημεία
 	Plaster	Γύψος
 	Note Paper…	Χαρτί σημειώσεων…
 	Note Paper	Χαρτί σημειώσεων
+	Add Fonts…	Προσθήκη γραμματοσειρών…
+	Chinese	Κινεζικά
+	Korean	Κορεατικά
+	Cyrillic	Κυριλλικά
+	Greek	Ελληνικά
+	Hebrew	Εβραϊκά
+	Devanagari	Ντεβαναγκάρι
+	Variable fonts only	Μόνο μεταβλητές γραμματοσειρές
+@msg	Added {added} font file(s)	Προστέθηκαν {added} αρχεία γραμματοσειρών
+@msg	Added {added} font file(s); {_1} skipped	Προστέθηκαν {added} αρχεία γραμματοσειρών· παραλείφθηκαν {_1}
+@msg	Couldn't add {_1}: {_2}	Δεν ήταν δυνατή η προσθήκη του {_1}: {_2}

@@ -4854,3 +4854,14 @@ effect	Soft	Weich
 	Plaster	Gipsabdruck
 	Note Paper…	Prägepapier…
 	Note Paper	Prägepapier
+	Add Fonts…	Schriften hinzufügen…
+	Chinese	Chinesisch
+	Korean	Koreanisch
+	Cyrillic	Kyrillisch
+	Greek	Griechisch
+	Hebrew	Hebräisch
+	Devanagari	Devanagari
+	Variable fonts only	Nur variable Schriften
+@msg	Added {added} font file(s)	{added} Schriftdatei(en) hinzugefügt
+@msg	Added {added} font file(s); {_1} skipped	{added} Schriftdatei(en) hinzugefügt; {_1} übersprungen
+@msg	Couldn't add {_1}: {_2}	{_1} konnte nicht hinzugefügt werden: {_2}

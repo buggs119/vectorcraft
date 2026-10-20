@@ -139,6 +139,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
     ("file.clearRecent", "Clear Recent Files", "", "{}"),
     ("type.findFont", "Find Font…", "", "{} open the Find Font dialog (engine: text.fonts / text.replaceFont / select.font)"),
     (
+        "ui.installFonts",
+        "Add Fonts…",
+        "",
+        "{paths?: [font files]} add font files to VectorCraft's Fonts folder so they are listed and used (text.installFonts); without paths pick them (the web opens the browser's file picker and adds them for the session; File › Open or a drop of a font file adds it too)",
+    ),
+    (
         "ui.missingFontsDialog",
         "Missing Fonts Dialog",
         "",
@@ -1695,6 +1701,10 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         "ui.printPresetDialog" => crate::dialogs::print::open_preset(app, p),
         "plugin.dialog" => crate::dialogs::plugin::open(app, p),
         "ui.installPlugin" => io::install_plugin(app, s("path")),
+        "ui.installFonts" => io::install_fonts(
+            app,
+            p.get("paths").and_then(Value::as_array).map(|a| a.iter().filter_map(Value::as_str).map(String::from).collect()).unwrap_or_default(),
+        ),
         "ui.checkScript" => crate::dialogs::script_check::command(app, p),
         "ui.perspectiveGridDialog" => crate::dialogs::perspective_grid::open(app),
         "ui.perspectivePresetsDialog" => {
@@ -2744,6 +2754,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 c("Fit Headline", "text.fitHeadline"),
                 Sep,
                 c("Find Font…", "type.findFont"),
+                c("Add Fonts…", "ui.installFonts"),
                 sub(
                     "Change Case",
                     vec![

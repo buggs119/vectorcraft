@@ -5233,3 +5233,14 @@ theme	Appearance	Външен вид
 	Plaster	Гипс
 	Note Paper…	Хартия за писма…
 	Note Paper	Хартия за писма
+	Add Fonts…	Добавяне на шрифтове…
+	Chinese	Китайски
+	Korean	Корейски
+	Cyrillic	Кирилица
+	Greek	Гръцки
+	Hebrew	Иврит
+	Devanagari	Деванагари
+	Variable fonts only	Само променливи шрифтове
+@msg	Added {added} font file(s)	Добавени файлове с шрифтове: {added}
+@msg	Added {added} font file(s); {_1} skipped	Добавени файлове с шрифтове: {added}; пропуснати: {_1}
+@msg	Couldn't add {_1}: {_2}	Не може да се добави {_1}: {_2}

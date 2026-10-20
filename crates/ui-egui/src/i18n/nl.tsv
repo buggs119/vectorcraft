@@ -5293,3 +5293,14 @@ swatch	Bright Violet	Felviolet
 	Plaster	Gips
 	Note Paper…	Notitiepapier…
 	Note Paper	Notitiepapier
+	Add Fonts…	Lettertypen toevoegen…
+	Chinese	Chinees
+	Korean	Koreaans
+	Cyrillic	Cyrillisch
+	Greek	Grieks
+	Hebrew	Hebreeuws
+	Devanagari	Devanagari
+	Variable fonts only	Alleen variabele lettertypen
+@msg	Added {added} font file(s)	{added} lettertypebestand(en) toegevoegd
+@msg	Added {added} font file(s); {_1} skipped	{added} lettertypebestand(en) toegevoegd; {_1} overgeslagen
+@msg	Couldn't add {_1}: {_2}	Kan {_1} niet toevoegen: {_2}

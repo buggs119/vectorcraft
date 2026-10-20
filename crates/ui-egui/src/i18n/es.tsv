@@ -5215,3 +5215,14 @@ mark-style	Japanese	Japonesas
 	Plaster	Yeso
 	Note Paper…	Papel con relieve…
 	Note Paper	Papel con relieve
+	Add Fonts…	Añadir fuentes…
+	Chinese	Chino
+	Korean	Coreano
+	Cyrillic	Cirílico
+	Greek	Griego
+	Hebrew	Hebreo
+	Devanagari	Devanagari
+	Variable fonts only	Solo fuentes variables
+@msg	Added {added} font file(s)	Se añadieron {added} archivo(s) de fuente
+@msg	Added {added} font file(s); {_1} skipped	Se añadieron {added} archivo(s) de fuente; {_1} omitido(s)
+@msg	Couldn't add {_1}: {_2}	No se pudo añadir {_1}: {_2}

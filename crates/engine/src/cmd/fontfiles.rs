@@ -45,10 +45,11 @@ const MAX_ADD_FILES: usize = 1_000;
 pub(crate) const MAX_FONT_FILE: u64 = 256 << 20;
 #[cfg(not(target_arch = "wasm32"))]
 const MAX_ADD_BYTES: u64 = 1 << 30;
-/// The extensions of the font files `text.addFontFiles` copies (in any case), besides suitcase
-/// fonts.
-#[cfg(not(target_arch = "wasm32"))]
-const FONT_EXTENSIONS: &[&str] = &["ttf", "otf", "ttc", "otc", "woff", "woff2"];
+/// The extensions of the font files `text.addFontFiles` and `text.installFonts` copy (in any
+/// case), besides suitcase fonts; File › Open and a drop install them.
+pub const FONT_EXTS: &[&str] = &["ttf", "otf", "ttc", "otc", "woff", "woff2"];
+/// Largest base64 payload `text.installFonts` accepts for one font (the file limit, encoded).
+const MAX_DATA_CHARS: usize = (MAX_FONT_FILE as usize) / 3 * 4 + 4;
 /// Why a file wasn't copied.
 const NOT_A_FILE: &str = "not a file";
 #[cfg(not(target_arch = "wasm32"))]
@@ -88,6 +89,15 @@ pub fn specs() -> Vec<CommandSpec> {
             "{files: [paths the last text.findFontFiles search found] (1 to 1000)} copy the font files into VectorCraft's own Fonts folder (next to the preferences; the desktop app and vectorcraft-cli read it), never replacing a file there: the names Name.otf, Name 2.otf … Name 99.otf are tried in turn until one is free, which gets the copy, or is a file with the same contents, which is kept; then scan the fonts again, as text.rescanFonts does, and type set in them redraws. Only regular .ttf, .otf, .ttc, .otc, .woff and .woff2 files and suitcase fonts (with their resource fork) are copied, at most 256 MB a file and 1 GB in all; any other file is skipped. Add only fonts you own or are licensed to install; none on the web → {folder, copied: [{from, to}], kept: [{from, to}], skipped: [{file, reason}], families?, faces?}",
             always,
             add
+        ),
+        cmd!(
+            query "text.installFonts",
+            "Add Fonts",
+            [],
+            None,
+            "{files: [paths of font files: .ttf, .otf, .ttc, .otc, .woff, .woff2, or suitcase fonts on macOS] (1 to 1000)} | {name, dataBase64} copy the font files into VectorCraft's own Fonts folder as text.addFontFiles does (never replacing a file there; at most 256 MB a file and 1 GB in all), so they are listed and used from now on, or with dataBase64 add the font in the bytes for this session only (the web, which has no Fonts folder) → {folder?, copied: [{from, to}], kept: [{from, to}], skipped: [{file, reason}], faces?: faces added, families?}",
+            always,
+            install
         ),
     ]
 }
@@ -335,19 +345,61 @@ fn add(s: &mut Session, p: &Value) -> Result<Value> {
         .ok_or_else(|| bad(C, "`files` must be 1 to 1000 paths of font files the last text.findFontFiles search found"))?;
     files.sort();
     files.dedup();
-    let dir = vectorcraft_text::app_font_dir()
-        .ok_or_else(|| EngineError::Other("VectorCraft's Fonts folder isn't set here: the desktop app and vectorcraft-cli set it".into()))?;
+    fonts_dir()?;
     let found: Vec<PathBuf> =
         s.font_search.as_ref().map(|f| f.search.progress().hits.into_iter().map(|(path, _)| path).collect()).unwrap_or_default();
     if let Some(f) = files.iter().find(|f| !found.contains(f)) {
         return Err(bad(C, format!("`{}` is not a font file the last text.findFontFiles search found", f.display())));
     }
-    for f in &files {
+    copy_and_rescan(s, &files)
+}
+
+/// Type › Add Fonts…, File › Open and a drop of font files: [`add`] for any font files the user
+/// picked, or a font's bytes added for this session.
+fn install(s: &mut Session, p: &Value) -> Result<Value> {
+    const C: &str = "text.installFonts";
+    if let Some(data) = str_param(p, "dataBase64") {
+        if data.len() > MAX_DATA_CHARS {
+            return Err(bad(C, "`dataBase64` is larger than 256 MB"));
+        }
+        let name = str_param(p, "name").unwrap_or("font").chars().take(MAX_NAME).collect::<String>();
+        let bytes = vectorcraft_format::base64_decode(data).ok_or_else(|| bad(C, "`dataBase64` is not valid base64"))?;
+        let faces = FontDb::global().add_font(bytes);
+        let mut out = json!({ "copied": [], "kept": [], "skipped": [], "faces": faces });
+        if faces == 0 {
+            out["skipped"] = json!([{ "file": name, "reason": "not a font file, or its fonts are loaded already" }]);
+        } else {
+            // Type set in the new fonts redraws in them.
+            out["families"] = super::fonts::rescan(s, &Value::Null)?["families"].clone();
+        }
+        return Ok(out);
+    }
+    let mut files: Vec<PathBuf> = p
+        .get("files")
+        .and_then(Value::as_array)
+        .filter(|a| (1..=MAX_ADD_FILES).contains(&a.len()))
+        .and_then(|a| a.iter().map(|f| f.as_str().filter(|f| f.len() <= MAX_PATH).map(PathBuf::from)).collect::<Option<Vec<_>>>())
+        .ok_or_else(|| bad(C, "give `files` (1 to 1000 paths of font files) or `dataBase64` (one font file's bytes)"))?;
+    files.sort();
+    files.dedup();
+    copy_and_rescan(s, &files)
+}
+
+/// VectorCraft's own Fonts folder, or why there is none.
+fn fonts_dir() -> Result<&'static Path> {
+    vectorcraft_text::app_font_dir()
+        .ok_or_else(|| EngineError::Other("VectorCraft's Fonts folder isn't set here: the desktop app and vectorcraft-cli set it".into()))
+}
+
+/// Copy `files` into VectorCraft's own Fonts folder and catalog them.
+fn copy_and_rescan(s: &mut Session, files: &[PathBuf]) -> Result<Value> {
+    let dir = fonts_dir()?;
+    for f in files {
         crate::file_access::check_read(&f.to_string_lossy()).map_err(EngineError::Other)?;
     }
     // VectorCraft's own Fonts folder: no automation root applies to it.
     crate::file_access::unconfined(|| super::fileio::create_dir(&dir.to_string_lossy()))?;
-    let report = copy_into(&files, dir);
+    let report = copy_into(files, dir);
     let pairs = |v: &[(PathBuf, PathBuf)]| {
         v.iter().map(|(from, to)| json!({ "from": from.to_string_lossy(), "to": to.to_string_lossy() })).collect::<Vec<_>>()
     };
@@ -396,7 +448,7 @@ fn copy_one(from: &Path, dir: &Path, total: &mut u64) -> std::result::Result<sup
     if !meta.is_file() || from.file_name().is_none() {
         return Err(NOT_A_FILE.into());
     }
-    let font = from.extension().and_then(|e| e.to_str()).is_some_and(|e| FONT_EXTENSIONS.iter().any(|x| e.eq_ignore_ascii_case(x)));
+    let font = from.extension().and_then(|e| e.to_str()).is_some_and(|e| FONT_EXTS.iter().any(|x| e.eq_ignore_ascii_case(x)));
     // A suitcase font's fonts are in its resource fork, which is copied with it, whatever its name.
     let fork = match (vectorcraft_text::is_suitcase(from), font) {
         (true, _) => Some(read_fork(from)?),

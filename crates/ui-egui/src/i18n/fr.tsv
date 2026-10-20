@@ -5272,3 +5272,14 @@ theme	Appearance	Apparence
 	Plaster	Plâtre
 	Note Paper…	Papier gaufré…
 	Note Paper	Papier gaufré
+	Add Fonts…	Ajouter des polices…
+	Chinese	Chinois
+	Korean	Coréen
+	Cyrillic	Cyrillique
+	Greek	Grec
+	Hebrew	Hébreu
+	Devanagari	Devanagari
+	Variable fonts only	Polices variables uniquement
+@msg	Added {added} font file(s)	{added} fichier(s) de police ajouté(s)
+@msg	Added {added} font file(s); {_1} skipped	{added} fichier(s) de police ajouté(s) ; {_1} ignoré(s)
+@msg	Couldn't add {_1}: {_2}	Impossible d’ajouter {_1} : {_2}

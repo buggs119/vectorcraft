@@ -5251,3 +5251,14 @@ swatch	Bright Violet	Violet cerah
 	Plaster	Plester
 	Note Paper…	Kertas Catatan…
 	Note Paper	Kertas Catatan
+	Add Fonts…	Tambahkan Font…
+	Chinese	Tionghoa
+	Korean	Korea
+	Cyrillic	Sirilik
+	Greek	Yunani
+	Hebrew	Ibrani
+	Devanagari	Dewanagari
+	Variable fonts only	Hanya font variabel
+@msg	Added {added} font file(s)	{added} file font ditambahkan
+@msg	Added {added} font file(s); {_1} skipped	{added} file font ditambahkan; {_1} dilewati
+@msg	Couldn't add {_1}: {_2}	Tidak dapat menambahkan {_1}: {_2}
