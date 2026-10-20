@@ -378,11 +378,21 @@ fn create_outlines(s: &mut Session, _: &Value) -> Result<Value> {
                     children.push(Arc::new(Node::new(id, NodeKind::SymbolInstance { symbol: art.symbol.clone(), xf })));
                     continue;
                 }
+                let st = t.runs.get(g.run).map(|r| r.style.clone()).unwrap_or_else(|| t.first_style());
+                // A colour glyph becomes a group of its layers, each filled as it is drawn.
+                if let Some(layers) = vectorcraft_text::FontDb::global().color_layers(g.font_id, g.gid) {
+                    let layer_nodes: Vec<Arc<Node>> =
+                        layers.iter().filter_map(|l| color_layer_node(d, l, t.xf * g.xf, &st.fill)).map(Arc::new).collect();
+                    if !layer_nodes.is_empty() {
+                        let id = d.alloc_id();
+                        children.push(Arc::new(Node::group(id, layer_nodes)));
+                    }
+                    continue;
+                }
                 let path = PathData::from_bezpath(&g.outline).transformed(t.xf);
                 if path.is_empty() {
                     continue;
                 }
-                let st = t.runs.get(g.run).map(|r| r.style.clone()).unwrap_or_else(|| t.first_style());
                 let mut node = shape_node(d, path, None);
                 node.appearance = st.appearance().into();
                 children.push(Arc::new(node));
@@ -414,6 +424,21 @@ fn create_outlines(s: &mut Session, _: &Value) -> Result<Value> {
         Ok(out)
     })?;
     Ok(json!({ "ids": ids.iter().map(|i| i.0).collect::<Vec<_>>() }))
+}
+
+/// A colour glyph's layer `l` as a path in the document (`xf`: font units → document), filled as
+/// it is drawn ([`vectorcraft_text::color::layer_fill`]). None for an empty shape.
+fn color_layer_node(d: &mut Document, l: &vectorcraft_text::color::ColorLayer, xf: Affine, fill: &vectorcraft_color::Paint) -> Option<Node> {
+    let path = PathData::from_bezpath(&l.path).transformed(xf);
+    if path.is_empty() {
+        return None;
+    }
+    let (paint, opacity) = vectorcraft_text::color::layer_fill(l, xf, fill);
+    let mut node = shape_node(d, path, None);
+    let mut layer = vectorcraft_doc::FillLayer::new(paint);
+    layer.opacity = opacity;
+    node.appearance = vectorcraft_doc::Appearance { items: vec![vectorcraft_doc::AppearanceItem::Fill(layer)], ..Default::default() }.into();
+    Some(node)
 }
 
 pub(crate) fn text_targets(s: &Session, p: &Value, cmd: &str) -> Result<Vec<NodeId>> {

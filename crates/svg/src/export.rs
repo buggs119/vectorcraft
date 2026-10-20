@@ -1844,7 +1844,11 @@ impl Writer<'_> {
         let mut runs: Vec<(usize, kurbo::BezPath)> = vec![];
         // Underline and strikethrough bars join their run's outlines.
         let bars = vectorcraft_text::decorations(&lay, db, t);
-        for (run, outline) in lay.glyphs.iter().map(|g| (g.run, &g.outline)).chain(bars.iter().map(|(r, b)| (*r, b))) {
+        // Colour glyphs are written as their layers, each with its own fill.
+        let colour = |g: &vectorcraft_text::PositionedGlyph| db.color_layers(g.font_id, g.gid).map(|l| (g.run, g.xf, l));
+        let colours: Vec<_> = lay.glyphs.iter().filter_map(colour).collect();
+        let plain = lay.glyphs.iter().filter(|g| db.color_layers(g.font_id, g.gid).is_none());
+        for (run, outline) in plain.map(|g| (g.run, &g.outline)).chain(bars.iter().map(|(r, b)| (*r, b))) {
             match runs.iter_mut().find(|(r, _)| *r == run) {
                 Some((_, bp)) => bp.extend(outline.iter()),
                 None => runs.push((run, outline.clone())),
@@ -1864,6 +1868,20 @@ impl Writer<'_> {
             let glyphs = Node::path(NodeId(u64::MAX), pd.clone(), run.style.appearance());
             let d = self.path_d(&pd, self.xf);
             self.shape(&glyphs, &d, &[&pd], FillRule::NonZero, Some(lay.bounds));
+        }
+        for (r, gxf, layers) in colours {
+            let Some(run) = t.runs.get(r) else { continue };
+            for l in layers.iter() {
+                let mut bp = l.path.clone();
+                bp.apply_affine(gxf);
+                let pd = PathData::from_bezpath(&bp);
+                let (paint, opacity) = vectorcraft_text::color::layer_fill(l, gxf, &run.style.fill);
+                let mut fill = vectorcraft_doc::FillLayer::new(paint);
+                fill.opacity = opacity;
+                let ap = vectorcraft_doc::Appearance { items: vec![AppearanceItem::Fill(fill)], ..Default::default() };
+                let d = self.path_d(&pd, self.xf);
+                self.shape(&Node::path(NodeId(u64::MAX), pd.clone(), ap), &d, &[&pd], FillRule::NonZero, Some(kurbo::Shape::bounding_box(&bp)));
+            }
         }
         self.xf = saved;
         self.depth -= 1;

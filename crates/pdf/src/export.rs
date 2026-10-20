@@ -1535,8 +1535,14 @@ impl Exporter<'_> {
         let bars = vectorcraft_text::decorations(&layout, vectorcraft_text::FontDb::global(), t);
         for (i, run) in t.runs.iter().enumerate() {
             let mut bp = BezPath::new();
+            // Outlined, colour glyphs are drawn as their layers (below), not in the run's fill.
+            let db = vectorcraft_text::FontDb::global();
+            let mut colours = vec![];
             for g in layout.glyphs.iter().filter(|g| g.run == i) {
-                bp.extend(g.outline.iter());
+                match db.color_layers(g.font_id, g.gid).filter(|_| self.outline_text) {
+                    Some(layers) => colours.push((g.xf, layers)),
+                    None => bp.extend(g.outline.iter()),
+                }
             }
             // Underline and strikethrough bars are paths, with real text too (#847).
             let mut run_bars = BezPath::new();
@@ -1567,6 +1573,26 @@ impl Exporter<'_> {
                 }
                 s.pop();
             });
+            for (gxf, layers) in &colours {
+                s.push_transform(&text_space);
+                for l in layers.iter() {
+                    let mut lp = l.path.clone();
+                    lp.apply_affine(*gxf);
+                    let (paint, opacity) = vectorcraft_text::color::layer_fill(l, *gxf, fill);
+                    if let Some(path) = to_path(s, &lp)
+                        && let Some(paint) = self.paint(s, &paint, lp.bounding_box())
+                    {
+                        s.set_stroke(None);
+                        s.set_fill(Some(Fill {
+                            paint,
+                            opacity: NormalizedF32::new(opacity).unwrap_or(NormalizedF32::ONE),
+                            rule: krilla::paint::FillRule::NonZero,
+                        }));
+                        s.draw_path(&path);
+                    }
+                }
+                s.pop();
+            }
             // Characters with neither fill nor stroke (a scanned page's recognized text) are still
             // text: written invisible (rendering mode 3), so they can still be selected and searched.
             if let Some(text) = plain.as_deref().filter(|_| fill.is_none() && !run.style.has_stroke()) {

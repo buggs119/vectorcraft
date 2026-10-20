@@ -952,3 +952,25 @@ fn dictionary_values_the_reader_cannot_parse_are_skipped() {
         assert!(e.as_deref().is_some_and(|e| e.contains("built on one another without end")), "{junk}: {e:?}");
     }
 }
+
+/// Outlined, a colour glyph is written as its layers: re-imported, a path is the palette's red.
+#[test]
+fn outlined_colour_glyphs_keep_their_colours() {
+    use vectorcraft_text::test_fonts::{COLOR_FAMILY, COLOR_RED, color_font};
+    let db = vectorcraft_text::FontDb::global();
+    if !db.has_family(COLOR_FAMILY) {
+        assert!(db.add_font(color_font().unwrap()) > 0);
+    }
+    let mut d = doc(300.0, 100.0);
+    let t = TextObject::point(Point::new(10.0, 70.0), "O", CharStyle { size: 48.0, font_family: COLOR_FAMILY.into(), ..CharStyle::default() });
+    add(&mut d, Node::new(NodeId(0), NodeKind::Text(Box::new(t))));
+    let mut outlined = PdfOptions::uncompressed();
+    outlined.settings.advanced.outline_text = true;
+    let r = import_with_report(&export(&d, &outlined).unwrap(), &ImportOptions::default()).unwrap();
+    let fills: Vec<[u8; 4]> =
+        leaves(&r.document).iter().filter_map(|n| n.appearance.fill().and_then(|f| f.paint.color()).map(|c| c.to_rgba8(1.0))).collect();
+    let [cr, cg, cb, _] = COLOR_RED;
+    let near = |a: u8, b: u8| a.abs_diff(b) <= 3;
+    assert!(fills.iter().any(|c| near(c[0], cr) && near(c[1], cg) && near(c[2], cb)), "{fills:?}");
+    assert!(fills.len() >= 2, "the red layer and the one in the text's colour: {fills:?}");
+}

@@ -194,3 +194,35 @@ fn a_centred_character_stroke_writes_no_alignment() {
     let st: CharStyle = serde_json::from_value(old).unwrap();
     assert_eq!(st.stroke_align, StrokeAlign::Center, "files written before it existed stroke centred");
 }
+
+/// Create Outlines turns a colour glyph into a group of its layers, each with its own fill: the
+/// palette's red, and the text's fill for the layer in the text's colour.
+#[test]
+fn create_outlines_keeps_colour_glyph_layers() {
+    use vectorcraft_text::test_fonts::{COLOR_FAMILY, COLOR_RED, color_font};
+    let db = vectorcraft_text::FontDb::global();
+    if !db.has_family(COLOR_FAMILY) {
+        assert!(db.add_font(color_font().unwrap()) > 0);
+    }
+    let mut s = crate::Session::new();
+    run(&mut s, "file.new", json!({"width": 300, "height": 200}));
+    let id = run(&mut s, "text.create", json!({"x": 10, "y": 100, "text": "Ox", "font": COLOR_FAMILY, "size": 60}))["id"].as_u64().unwrap();
+    run(&mut s, "select.set", json!({ "ids": [id] }));
+    let g = run(&mut s, "type.createOutlines", json!({}))["ids"][0].as_u64().unwrap();
+    let d = &s.doc().unwrap().doc;
+    let glyphs = d.node(NodeId(g)).unwrap().children().unwrap().to_vec();
+    assert_eq!(glyphs.len(), 2, "O (a group of layers) and x");
+    let layers = glyphs[0].children().expect("O is a group of its layers").to_vec();
+    let fill = |n: &vectorcraft_doc::Node| {
+        n.appearance.items.iter().find_map(|i| match i {
+            vectorcraft_doc::AppearanceItem::Fill(f) => Some(f.paint.color().unwrap().to_rgba8(1.0)),
+            _ => None,
+        })
+    };
+    let [r, gr, b, _] = COLOR_RED;
+    assert_eq!(layers.len(), 2);
+    assert_eq!(fill(&layers[0]), Some([r, gr, b, 255]));
+    let text_fill = vectorcraft_doc::text::CharStyle::default().fill.color().unwrap().to_rgba8(1.0);
+    assert_eq!(fill(&layers[1]), Some(text_fill));
+    assert!(glyphs[1].children().is_none(), "x stays one path");
+}

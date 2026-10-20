@@ -109,6 +109,57 @@ fn layers_of(face: &FontFace, gid: u32) -> Option<Vec<ColorLayer>> {
     (!painter.layers.is_empty()).then_some(painter.layers)
 }
 
+/// The fill a document gives colour layer `l` drawn through `xf` (font units → the space the
+/// gradient geometry is wanted in), `fill` being the text's fill: its colour, the text's fill for the
+/// text's colour, or a linear or radial gradient; and its opacity. Sweep gradients, which documents
+/// don't have, become the mean of their stops' colours.
+pub fn layer_fill(l: &ColorLayer, xf: Affine, fill: &vectorcraft_doc::color::Paint) -> (vectorcraft_doc::color::Paint, f32) {
+    use vectorcraft_doc::color::{Color, Gradient, GradientGeom, GradientKind, GradientPaint, GradientStop, Paint};
+    let color = |c: &LayerColor| -> (Paint, f32) {
+        match *c {
+            LayerColor::Rgba([r, g, b, a]) => (Paint::solid(Color::rgb8(r, g, b)), f32::from(a) / 255.0),
+            LayerColor::Foreground(a) => (fill.clone(), a),
+        }
+    };
+    let gradient = |kind, stops: &[(f32, LayerColor)], geom| {
+        let mut stops: Vec<GradientStop> = stops
+            .iter()
+            .map(|(o, c)| {
+                let (p, a) = color(c);
+                let mut s = GradientStop::new(if o.is_finite() { o.clamp(0.0, 1.0) } else { 0.0 }, p.color().unwrap_or(Color::BLACK));
+                s.opacity = a;
+                s
+            })
+            .collect();
+        stops.sort_by(|a, b| a.offset.total_cmp(&b.offset));
+        Paint::Gradient(Box::new(GradientPaint { gradient: Gradient { kind, stops }, geom: Some(geom), angle: 0.0, swatch: None, freeform: None }))
+    };
+    let pxf = xf * l.paint_xf;
+    let (paint, opacity) = match &l.paint {
+        LayerPaint::Solid(c) => color(c),
+        LayerPaint::Linear { p0, p1, stops, .. } => {
+            (gradient(GradientKind::Linear, stops, GradientGeom { start: pxf * *p0, end: pxf * *p1, aspect: 1.0, focal: None }), 1.0)
+        }
+        LayerPaint::Radial { c0, r0, c1, r1, stops, .. } => {
+            let start = pxf * *c1;
+            let end = pxf * (*c1 + kurbo::Vec2::new(*r1, 0.0));
+            let focal = (*r0 < 1e-9 && c0 != c1).then(|| pxf * *c0);
+            (gradient(GradientKind::Radial, stops, GradientGeom { start, end, aspect: 1.0, focal }), 1.0)
+        }
+        LayerPaint::Sweep { stops, .. } => {
+            let n = stops.len().max(1) as f32;
+            let sum = stops.iter().fold([0.0f32; 4], |acc, (_, c)| {
+                let (p, a) = color(c);
+                let rgb = p.color().unwrap_or(Color::BLACK).to_rgba8(1.0);
+                [acc[0] + f32::from(rgb[0]), acc[1] + f32::from(rgb[1]), acc[2] + f32::from(rgb[2]), acc[3] + a]
+            });
+            let mean = |v: f32| (v / n).round().clamp(0.0, 255.0) as u8;
+            (Paint::solid(Color::rgb8(mean(sum[0]), mean(sum[1]), mean(sum[2]))), sum[3] / n)
+        }
+    };
+    (paint, opacity.clamp(0.0, 1.0))
+}
+
 /// Font units y up → y down.
 const FLIP: Affine = Affine::new([1.0, 0.0, 0.0, -1.0, 0.0, 0.0]);
 
